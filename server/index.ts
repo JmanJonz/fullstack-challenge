@@ -19,7 +19,15 @@ app.use(express.urlencoded({ extended: true }));
 
 app.get("/", (req, res) => {
   const rows = db.prepare("SELECT * FROM organizations").all();
-  res.json({ message: "Welcome to the server! 🎉", rows });
+  res.json({ message: "Welcome to the server! 🎉 Here are all the orgs", rows });
+});
+app.get("/accounts", (req, res) => {
+  const rows = db.prepare("SELECT * FROM accounts").all();
+  res.json({ message: "Accounts! 🎉", rows });
+});
+app.get("/deals", (req, res) => {
+  const rows = db.prepare("SELECT * FROM deals").all();
+  res.json({ message: "Deals!! 🎉", rows });
 });
 
 app.listen(port, () => {
