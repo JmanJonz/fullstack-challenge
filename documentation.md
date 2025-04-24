@@ -4,4 +4,4 @@
 
 - I don't want to take tons of time so once I create the schemas for the accounts and deals I am going to use LLM to create some sql to create some data to load into the database... 
 
--
+- I use lucid spark for notes and organizing my thoughts a lot so I am going to switch over to there and I can send that over if you would like after I turn this in... As of right now I am writing the instruction in my own words to make sure I clearly get what I am doing. 
