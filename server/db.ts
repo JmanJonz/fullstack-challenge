@@ -15,6 +15,7 @@ function initializeDatabase() {
     ).run();
   
     // Insert initial organizations and get their IDs
+    // appears like it is adding data every time the server restarts so I will fix that. There are tons of json objects returned...
     const insertOrganization = db.prepare(
       `
       INSERT INTO organizations (name) VALUES (:name);
