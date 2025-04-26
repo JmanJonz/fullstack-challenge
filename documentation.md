@@ -15,3 +15,7 @@
 - Anyways I had ai load mock data sql but I noticed that it is running everytime the server restarts and duplicating a lot of data soo I'm using ai to fix that so that it only adds the data if the tables are empty...
 
 - I tried using gemini to correct the code so that it only loads data in if none has been loaded in already, but it is causing a bunch of errors so I am going to go figure it out and setup those conditions myself...
+
+- I realized that the errors that I was getting were due to Typescript not knowing the object type, sooo I give ai better instructions letting it know that it needs to meet demands of typescript and now it mock data and simple api end points are working good. 
+
+- I'm getting the data simply by calling the different endpoints in the browser localhost:3000/... so now before I start building out the frontend too much I want to go to the rontend and simple fetch and display the data there before I worry about formatting it. 
