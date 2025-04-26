@@ -26,7 +26,7 @@ function initializeDatabase() {
         INSERT INTO organizations (name) VALUES (:name);
       `
     );
-    const sponsorCXInfo = insertOrganization.run({ name: "SponsorCX" });
+    const OrgOrgIncIncInfo = insertOrganization.run({ name: "OrgOrgIncInc" });
     const techSolutionsInfo = insertOrganization.run({ name: "Tech Solutions Inc." });
     const globalInnovationsInfo = insertOrganization.run({ name: "Global Innovations Ltd." });
     const pioneerMarketingInfo = insertOrganization.run({ name: "Pioneer Marketing Group" });
@@ -35,7 +35,7 @@ function initializeDatabase() {
     const mountainViewRealEstateInfo = insertOrganization.run({ name: "Mountain View Real Estate" });
 
     (db as any).organizationsMap = { // Added to the db object for later use
-      "SponsorCX": sponsorCXInfo.lastInsertRowid,
+      "OrgOrgIncInc": OrgOrgIncIncInfo.lastInsertRowid,
       "Tech Solutions Inc.": techSolutionsInfo.lastInsertRowid,
       "Global Innovations Ltd.": globalInnovationsInfo.lastInsertRowid,
       "Pioneer Marketing Group": pioneerMarketingInfo.lastInsertRowid,
@@ -71,51 +71,36 @@ function initializeDatabase() {
         INSERT INTO accounts (organization_id, name) VALUES (:organization_id, :name);
       `
     );
-    insertAccount.run({ organization_id: (db as any).organizationsMap["SponsorCX"], name: "Utah Jazz" });
-    insertAccount.run({ organization_id: (db as any).organizationsMap["SponsorCX"], name: "Real Salt Lake" });
-    insertAccount.run({ organization_id: (db as any).organizationsMap["SponsorCX"], name: "Vivint Arena" });
-    insertAccount.run({ organization_id: (db as any).organizationsMap["Tech Solutions Inc."], name: "Acme Corp" });
-    insertAccount.run({ organization_id: (db as any).organizationsMap["Tech Solutions Inc."], name: "Globex Industries" });
-    insertAccount.run({ organization_id: (db as any).organizationsMap["Tech Solutions Inc."], name: "Wayne Enterprises" });
-    insertAccount.run({ organization_id: (db as any).organizationsMap["SponsorCX"], name: "Utah Symphony" });
-    insertAccount.run({ organization_id: (db as any).organizationsMap["SponsorCX"], name: "Tracy Aviary" });
-    insertAccount.run({ organization_id: (db as any).organizationsMap["Summit Software Solutions"], name: "Alpha Technologies" });
-    insertAccount.run({ organization_id: (db as any).organizationsMap["Summit Software Solutions"], name: "Beta Corp" });
-    insertAccount.run({ organization_id: (db as any).organizationsMap["Coastal Financial Services"], name: "First National Bank" });
-    insertAccount.run({ organization_id: (db as any).organizationsMap["Mountain View Real Estate"], name: "Aspen Property Management" });
-    insertAccount.run({ organization_id: (db as any).organizationsMap["Mountain View Real Estate"], name: "Vail Resorts" });
-    insertAccount.run({ organization_id: (db as any).organizationsMap["Pioneer Marketing Group"], name: "Stellaris Corp" });
-
-    const utahJazzInfo = db.prepare("SELECT id FROM accounts WHERE name = 'Utah Jazz'").get() as { id: number } | undefined;
-    const realSaltLakeInfo = db.prepare("SELECT id FROM accounts WHERE name = 'Real Salt Lake'").get() as { id: number } | undefined;
-    const vivintArenaInfo = db.prepare("SELECT id FROM accounts WHERE name = 'Vivint Arena'").get() as { id: number } | undefined;
-    const acmeCorpInfo = db.prepare("SELECT id FROM accounts WHERE name = 'Acme Corp'").get() as { id: number } | undefined;
-    const globexIndustriesInfo = db.prepare("SELECT id FROM accounts WHERE name = 'Globex Industries'").get() as { id: number } | undefined;
-    const wayneEnterprisesInfo = db.prepare("SELECT id FROM accounts WHERE name = 'Wayne Enterprises'").get() as { id: number } | undefined;
-    const utahSymphonyInfo = db.prepare("SELECT id FROM accounts WHERE name = 'Utah Symphony'").get() as { id: number } | undefined;
-    const tracyAviaryInfo = db.prepare("SELECT id FROM accounts WHERE name = 'Tracy Aviary'").get() as { id: number } | undefined;
-    const alphaTechInfo = db.prepare("SELECT id FROM accounts WHERE name = 'Alpha Technologies'").get() as { id: number } | undefined;
-    const betaCorpInfo = db.prepare("SELECT id FROM accounts WHERE name = 'Beta Corp'").get() as { id: number } | undefined;
-    const firstNationalBankInfo = db.prepare("SELECT id FROM accounts WHERE name = 'First National Bank'").get() as { id: number } | undefined;
-    const aspenPropertyInfo = db.prepare("SELECT id FROM accounts WHERE name = 'Aspen Property Management'").get() as { id: number } | undefined;
-    const vailResortsInfo = db.prepare("SELECT id FROM accounts WHERE name = 'Vail Resorts'").get() as { id: number } | undefined;
-    const stellarisCorpInfo = db.prepare("SELECT id FROM accounts WHERE name = 'Stellaris Corp'").get() as { id: number } | undefined;
+    const utahJazzInfo = insertAccount.run({ organization_id: (db as any).organizationsMap["OrgOrgIncInc"], name: "Utah Jazz" });
+    const realSaltLakeInfo = insertAccount.run({ organization_id: (db as any).organizationsMap["OrgOrgIncInc"], name: "Real Salt Lake" });
+    const vivintArenaInfo = insertAccount.run({ organization_id: (db as any).organizationsMap["OrgOrgIncInc"], name: "Vivint Arena" });
+    const acmeCorpInfo = insertAccount.run({ organization_id: (db as any).organizationsMap["Tech Solutions Inc."], name: "Acme Corp" });
+    const globexIndustriesInfo = insertAccount.run({ organization_id: (db as any).organizationsMap["Tech Solutions Inc."], name: "Globex Industries" });
+    const wayneEnterprisesInfo = insertAccount.run({ organization_id: (db as any).organizationsMap["Tech Solutions Inc."], name: "Wayne Enterprises" });
+    const utahSymphonyInfo = insertAccount.run({ organization_id: (db as any).organizationsMap["OrgOrgIncInc"], name: "Utah Symphony" });
+    const tracyAviaryInfo = insertAccount.run({ organization_id: (db as any).organizationsMap["OrgOrgIncInc"], name: "Tracy Aviary" });
+    const alphaTechInfo = insertAccount.run({ organization_id: (db as any).organizationsMap["Summit Software Solutions"], name: "Alpha Technologies" });
+    const betaCorpInfo = insertAccount.run({ organization_id: (db as any).organizationsMap["Summit Software Solutions"], name: "Beta Corp" });
+    const firstNationalBankInfo = insertAccount.run({ organization_id: (db as any).organizationsMap["Coastal Financial Services"], name: "First National Bank" });
+    const aspenPropertyInfo = insertAccount.run({ organization_id: (db as any).organizationsMap["Mountain View Real Estate"], name: "Aspen Property Management" });
+    const vailResortsInfo = insertAccount.run({ organization_id: (db as any).organizationsMap["Mountain View Real Estate"], name: "Vail Resorts" });
+    const stellarisCorpInfo = insertAccount.run({ organization_id: (db as any).organizationsMap["Pioneer Marketing Group"], name: "Stellaris Corp" });
 
     (db as any).accountsMap = { // Added to the db object for later use
-      "Utah Jazz": utahJazzInfo?.id,
-      "Real Salt Lake": realSaltLakeInfo?.id,
-      "Vivint Arena": vivintArenaInfo?.id,
-      "Acme Corp": acmeCorpInfo?.id,
-      "Globex Industries": globexIndustriesInfo?.id,
-      "Wayne Enterprises": wayneEnterprisesInfo?.id,
-      "Utah Symphony": utahSymphonyInfo?.id,
-      "Tracy Aviary": tracyAviaryInfo?.id,
-      "Alpha Technologies": alphaTechInfo?.id,
-      "Beta Corp": betaCorpInfo?.id,
-      "First National Bank": firstNationalBankInfo?.id,
-      "Aspen Property Management": aspenPropertyInfo?.id,
-      "Vail Resorts": vailResortsInfo?.id,
-      "Stellaris Corp": stellarisCorpInfo?.id,
+      "Utah Jazz": utahJazzInfo.lastInsertRowid,
+      "Real Salt Lake": realSaltLakeInfo.lastInsertRowid,
+      "Vivint Arena": vivintArenaInfo.lastInsertRowid,
+      "Acme Corp": acmeCorpInfo.lastInsertRowid,
+      "Globex Industries": globexIndustriesInfo.lastInsertRowid,
+      "Wayne Enterprises": wayneEnterprisesInfo.lastInsertRowid,
+      "Utah Symphony": utahSymphonyInfo.lastInsertRowid,
+      "Tracy Aviary": tracyAviaryInfo.lastInsertRowid,
+      "Alpha Technologies": alphaTechInfo.lastInsertRowid,
+      "Beta Corp": betaCorpInfo.lastInsertRowid,
+      "First National Bank": firstNationalBankInfo.lastInsertRowid,
+      "Aspen Property Management": aspenPropertyInfo.lastInsertRowid,
+      "Vail Resorts": vailResortsInfo.lastInsertRowid,
+      "Stellaris Corp": stellarisCorpInfo.lastInsertRowid,
     };
   } else {
     console.log("Accounts table already has data. Skipping initial insertion.");

@@ -19,3 +19,13 @@
 - I realized that the errors that I was getting were due to Typescript not knowing the object type, sooo I give ai better instructions letting it know that it needs to meet demands of typescript and now it mock data and simple api end points are working good. 
 
 - I'm getting the data simply by calling the different endpoints in the browser localhost:3000/... so now before I start building out the frontend too much I want to go to the rontend and simple fetch and display the data there before I worry about formatting it. 
+
+- Okay I'm back and have all the deal names rendering out to the ui in a boring plain no css way. 
+
+- I'm a little confused how it wants the deals to be displayed. I assume by organization or something but I'm going to go back through and look at the criteria more before continuing. 
+
+- Okay yeah I have been looking at the screen shot and I am still not exactly sure what is going on there. It looks like it is a page showing the deals for a specific organization I think but then there are three columns with subheadings and a bunch of other things with values below so I am starting to think that maybe it is pulling in deals for an organization and that the subheadings are account names maybe and then the deals for that organization is organized by account down below? 
+
+- These are assumptions that I am making so I am just going to move forward for now editing my backend endpoints so that you can pass to it an organization id and then only get the deals returned back for that specific org instead of all of the deals currently in the database. 
+
+- I noticed that ai didn't link accounts to org and deals to accounts so I revised my prompt and got that fixed so that I can now continue making the api endpoint to get all of the deals for an organization by getting all of deals linked to accounts that are linked to the org in the endpoint. 
