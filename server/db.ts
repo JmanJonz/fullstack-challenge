@@ -1,10 +1,15 @@
 import Database from "better-sqlite3";
 
+interface CountResult {
+  'COUNT(*)': number;
+}
+
 function initializeDatabase() {
   const db = new Database("./database.sqlite", { verbose: console.log });
-    // Create organizations table
-    db.prepare(
-      `
+
+  // Create organizations table and insert initial data if empty
+  db.prepare(
+    `
       CREATE TABLE IF NOT EXISTS organizations (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT NOT NULL,
@@ -12,13 +17,13 @@ function initializeDatabase() {
         updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
       );
     `
-    ).run();
-  
-    // Insert initial organizations and get their IDs
-    // appears like it is adding data every time the server restarts so I will fix that. There are tons of json objects returned...
+  ).run();
+
+  const organizationCountResult = db.prepare("SELECT COUNT(*) FROM organizations;").get() as CountResult;
+  if (organizationCountResult['COUNT(*)'] === 0) {
     const insertOrganization = db.prepare(
       `
-      INSERT INTO organizations (name) VALUES (:name);
+        INSERT INTO organizations (name) VALUES (:name);
       `
     );
     const sponsorCXInfo = insertOrganization.run({ name: "SponsorCX" });
@@ -28,8 +33,8 @@ function initializeDatabase() {
     const summitSoftwareInfo = insertOrganization.run({ name: "Summit Software Solutions" });
     const coastalFinancialInfo = insertOrganization.run({ name: "Coastal Financial Services" });
     const mountainViewRealEstateInfo = insertOrganization.run({ name: "Mountain View Real Estate" });
-  
-    const organizationsMap = {
+
+    (db as any).organizationsMap = { // Added to the db object for later use
       "SponsorCX": sponsorCXInfo.lastInsertRowid,
       "Tech Solutions Inc.": techSolutionsInfo.lastInsertRowid,
       "Global Innovations Ltd.": globalInnovationsInfo.lastInsertRowid,
@@ -38,10 +43,16 @@ function initializeDatabase() {
       "Coastal Financial Services": coastalFinancialInfo.lastInsertRowid,
       "Mountain View Real Estate": mountainViewRealEstateInfo.lastInsertRowid,
     };
-  
-    // Create accounts table
-    db.prepare(
-      `
+  } else {
+    console.log("Organizations table already has data. Skipping initial insertion.");
+    const existingOrganizations = db.prepare("SELECT id, name FROM organizations;").all() as { id: number; name: string }[];
+    (db as any).organizationsMap = {};
+    existingOrganizations.forEach(org => (db as any).organizationsMap[org.name] = org.id);
+  }
+
+  // Create accounts table and insert initial data if empty
+  db.prepare(
+    `
       CREATE TABLE IF NOT EXISTS accounts (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         organization_id INTEGER NOT NULL,
@@ -51,49 +62,71 @@ function initializeDatabase() {
         FOREIGN KEY (organization_id) REFERENCES organizations(id)
       );
     `
-    ).run();
-  
-    // Insert initial accounts (linking to the organizations using their generated IDs)
+  ).run();
+
+  const accountCountResult = db.prepare("SELECT COUNT(*) FROM accounts;").get() as CountResult;
+  if (accountCountResult['COUNT(*)'] === 0) {
     const insertAccount = db.prepare(
       `
-      INSERT INTO accounts (organization_id, name) VALUES (:organization_id, :name);
+        INSERT INTO accounts (organization_id, name) VALUES (:organization_id, :name);
       `
     );
-    const utahJazzInfo = insertAccount.run({ organization_id: organizationsMap["SponsorCX"], name: "Utah Jazz" });
-    const realSaltLakeInfo = insertAccount.run({ organization_id: organizationsMap["SponsorCX"], name: "Real Salt Lake" });
-    const vivintArenaInfo = insertAccount.run({ organization_id: organizationsMap["SponsorCX"], name: "Vivint Arena" });
-    const acmeCorpInfo = insertAccount.run({ organization_id: organizationsMap["Tech Solutions Inc."], name: "Acme Corp" });
-    const globexIndustriesInfo = insertAccount.run({ organization_id: organizationsMap["Tech Solutions Inc."], name: "Globex Industries" });
-    const wayneEnterprisesInfo = insertAccount.run({ organization_id: organizationsMap["Tech Solutions Inc."], name: "Wayne Enterprises" });
-    const utahSymphonyInfo = insertAccount.run({ organization_id: organizationsMap["SponsorCX"], name: "Utah Symphony" });
-    const tracyAviaryInfo = insertAccount.run({ organization_id: organizationsMap["SponsorCX"], name: "Tracy Aviary" });
-    const alphaTechInfo = insertAccount.run({ organization_id: organizationsMap["Summit Software Solutions"], name: "Alpha Technologies" });
-    const betaCorpInfo = insertAccount.run({ organization_id: organizationsMap["Summit Software Solutions"], name: "Beta Corp" });
-    const firstNationalBankInfo = insertAccount.run({ organization_id: organizationsMap["Coastal Financial Services"], name: "First National Bank" });
-    const aspenPropertyInfo = insertAccount.run({ organization_id: organizationsMap["Mountain View Real Estate"], name: "Aspen Property Management" });
-    const vailResortsInfo = insertAccount.run({ organization_id: organizationsMap["Mountain View Real Estate"], name: "Vail Resorts" });
-    const stellarisCorpInfo = insertAccount.run({ organization_id: organizationsMap["Pioneer Marketing Group"], name: "Stellaris Corp" });
-  
-    const accountsMap = {
-      "Utah Jazz": utahJazzInfo.lastInsertRowid,
-      "Real Salt Lake": realSaltLakeInfo.lastInsertRowid,
-      "Vivint Arena": vivintArenaInfo.lastInsertRowid,
-      "Acme Corp": acmeCorpInfo.lastInsertRowid,
-      "Globex Industries": globexIndustriesInfo.lastInsertRowid,
-      "Wayne Enterprises": wayneEnterprisesInfo.lastInsertRowid,
-      "Utah Symphony": utahSymphonyInfo.lastInsertRowid,
-      "Tracy Aviary": tracyAviaryInfo.lastInsertRowid,
-      "Alpha Technologies": alphaTechInfo.lastInsertRowid,
-      "Beta Corp": betaCorpInfo.lastInsertRowid,
-      "First National Bank": firstNationalBankInfo.lastInsertRowid,
-      "Aspen Property Management": aspenPropertyInfo.lastInsertRowid,
-      "Vail Resorts": vailResortsInfo.lastInsertRowid,
-      "Stellaris Corp": stellarisCorpInfo.lastInsertRowid,
+    insertAccount.run({ organization_id: (db as any).organizationsMap["SponsorCX"], name: "Utah Jazz" });
+    insertAccount.run({ organization_id: (db as any).organizationsMap["SponsorCX"], name: "Real Salt Lake" });
+    insertAccount.run({ organization_id: (db as any).organizationsMap["SponsorCX"], name: "Vivint Arena" });
+    insertAccount.run({ organization_id: (db as any).organizationsMap["Tech Solutions Inc."], name: "Acme Corp" });
+    insertAccount.run({ organization_id: (db as any).organizationsMap["Tech Solutions Inc."], name: "Globex Industries" });
+    insertAccount.run({ organization_id: (db as any).organizationsMap["Tech Solutions Inc."], name: "Wayne Enterprises" });
+    insertAccount.run({ organization_id: (db as any).organizationsMap["SponsorCX"], name: "Utah Symphony" });
+    insertAccount.run({ organization_id: (db as any).organizationsMap["SponsorCX"], name: "Tracy Aviary" });
+    insertAccount.run({ organization_id: (db as any).organizationsMap["Summit Software Solutions"], name: "Alpha Technologies" });
+    insertAccount.run({ organization_id: (db as any).organizationsMap["Summit Software Solutions"], name: "Beta Corp" });
+    insertAccount.run({ organization_id: (db as any).organizationsMap["Coastal Financial Services"], name: "First National Bank" });
+    insertAccount.run({ organization_id: (db as any).organizationsMap["Mountain View Real Estate"], name: "Aspen Property Management" });
+    insertAccount.run({ organization_id: (db as any).organizationsMap["Mountain View Real Estate"], name: "Vail Resorts" });
+    insertAccount.run({ organization_id: (db as any).organizationsMap["Pioneer Marketing Group"], name: "Stellaris Corp" });
+
+    const utahJazzInfo = db.prepare("SELECT id FROM accounts WHERE name = 'Utah Jazz'").get() as { id: number } | undefined;
+    const realSaltLakeInfo = db.prepare("SELECT id FROM accounts WHERE name = 'Real Salt Lake'").get() as { id: number } | undefined;
+    const vivintArenaInfo = db.prepare("SELECT id FROM accounts WHERE name = 'Vivint Arena'").get() as { id: number } | undefined;
+    const acmeCorpInfo = db.prepare("SELECT id FROM accounts WHERE name = 'Acme Corp'").get() as { id: number } | undefined;
+    const globexIndustriesInfo = db.prepare("SELECT id FROM accounts WHERE name = 'Globex Industries'").get() as { id: number } | undefined;
+    const wayneEnterprisesInfo = db.prepare("SELECT id FROM accounts WHERE name = 'Wayne Enterprises'").get() as { id: number } | undefined;
+    const utahSymphonyInfo = db.prepare("SELECT id FROM accounts WHERE name = 'Utah Symphony'").get() as { id: number } | undefined;
+    const tracyAviaryInfo = db.prepare("SELECT id FROM accounts WHERE name = 'Tracy Aviary'").get() as { id: number } | undefined;
+    const alphaTechInfo = db.prepare("SELECT id FROM accounts WHERE name = 'Alpha Technologies'").get() as { id: number } | undefined;
+    const betaCorpInfo = db.prepare("SELECT id FROM accounts WHERE name = 'Beta Corp'").get() as { id: number } | undefined;
+    const firstNationalBankInfo = db.prepare("SELECT id FROM accounts WHERE name = 'First National Bank'").get() as { id: number } | undefined;
+    const aspenPropertyInfo = db.prepare("SELECT id FROM accounts WHERE name = 'Aspen Property Management'").get() as { id: number } | undefined;
+    const vailResortsInfo = db.prepare("SELECT id FROM accounts WHERE name = 'Vail Resorts'").get() as { id: number } | undefined;
+    const stellarisCorpInfo = db.prepare("SELECT id FROM accounts WHERE name = 'Stellaris Corp'").get() as { id: number } | undefined;
+
+    (db as any).accountsMap = { // Added to the db object for later use
+      "Utah Jazz": utahJazzInfo?.id,
+      "Real Salt Lake": realSaltLakeInfo?.id,
+      "Vivint Arena": vivintArenaInfo?.id,
+      "Acme Corp": acmeCorpInfo?.id,
+      "Globex Industries": globexIndustriesInfo?.id,
+      "Wayne Enterprises": wayneEnterprisesInfo?.id,
+      "Utah Symphony": utahSymphonyInfo?.id,
+      "Tracy Aviary": tracyAviaryInfo?.id,
+      "Alpha Technologies": alphaTechInfo?.id,
+      "Beta Corp": betaCorpInfo?.id,
+      "First National Bank": firstNationalBankInfo?.id,
+      "Aspen Property Management": aspenPropertyInfo?.id,
+      "Vail Resorts": vailResortsInfo?.id,
+      "Stellaris Corp": stellarisCorpInfo?.id,
     };
-  
-    // Create deals table
-    db.prepare(
-      `
+  } else {
+    console.log("Accounts table already has data. Skipping initial insertion.");
+    const existingAccounts = db.prepare("SELECT id, name FROM accounts;").all() as { id: number; name: string }[];
+    (db as any).accountsMap = {};
+    existingAccounts.forEach(account => (db as any).accountsMap[account.name] = account.id);
+  }
+
+  // Create deals table and insert initial data if empty
+  db.prepare(
+    `
       CREATE TABLE IF NOT EXISTS deals (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         account_id INTEGER NOT NULL,
@@ -107,17 +140,18 @@ function initializeDatabase() {
         FOREIGN KEY (account_id) REFERENCES accounts(id)
       );
     `
-    ).run();
-  
-    // Insert initial deals (linking to the accounts using their generated IDs)
+  ).run();
+
+  const dealCountResult = db.prepare("SELECT COUNT(*) FROM deals;").get() as CountResult;
+  if (dealCountResult['COUNT(*)'] === 0) {
     const insertDeal = db.prepare(
       `
-      INSERT INTO deals (account_id, name, start_date, end_date, value, status)
-      VALUES (:account_id, :name, :start_date, :end_date, :value, :status);
+        INSERT INTO deals (account_id, name, start_date, end_date, value, status)
+        VALUES (:account_id, :name, :start_date, :end_date, :value, :status);
       `
     );
     insertDeal.run({
-      account_id: accountsMap["Utah Jazz"],
+      account_id: (db as any).accountsMap["Utah Jazz"],
       name: "Jazz Sponsorship 2025-2026",
       start_date: "2025-07-01",
       end_date: "2026-06-30",
@@ -125,7 +159,7 @@ function initializeDatabase() {
       status: "Active",
     });
     insertDeal.run({
-      account_id: accountsMap["Real Salt Lake"],
+      account_id: (db as any).accountsMap["Real Salt Lake"],
       name: "RSL Jersey Sponsorship 2025",
       start_date: "2025-03-01",
       end_date: "2025-11-30",
@@ -133,7 +167,7 @@ function initializeDatabase() {
       status: "Active",
     });
     insertDeal.run({
-      account_id: accountsMap["Vivint Arena"],
+      account_id: (db as any).accountsMap["Vivint Arena"],
       name: "Arena Naming Rights Extension",
       start_date: "2026-01-01",
       end_date: "2030-12-31",
@@ -141,7 +175,7 @@ function initializeDatabase() {
       status: "Negotiating",
     });
     insertDeal.run({
-      account_id: accountsMap["Acme Corp"],
+      account_id: (db as any).accountsMap["Acme Corp"],
       name: "Acme Product Placement",
       start_date: "2025-05-01",
       end_date: "2025-12-31",
@@ -149,7 +183,7 @@ function initializeDatabase() {
       status: "Pending",
     });
     insertDeal.run({
-      account_id: accountsMap["Globex Industries"],
+      account_id: (db as any).accountsMap["Globex Industries"],
       name: "Globex Event Sponsorship",
       start_date: "2025-09-15",
       end_date: "2025-09-15",
@@ -157,7 +191,7 @@ function initializeDatabase() {
       status: "Closed Won",
     });
     insertDeal.run({
-      account_id: accountsMap["Wayne Enterprises"],
+      account_id: (db as any).accountsMap["Wayne Enterprises"],
       name: "Wayne Tech Partnership Q3 2025",
       start_date: "2025-07-01",
       end_date: "2025-09-30",
@@ -165,7 +199,7 @@ function initializeDatabase() {
       status: "Active",
     });
     insertDeal.run({
-      account_id: accountsMap["Utah Symphony"],
+      account_id: (db as any).accountsMap["Utah Symphony"],
       name: "Symphony Season Sponsorship 2025-2026",
       start_date: "2025-09-01",
       end_date: "2026-05-31",
@@ -173,7 +207,7 @@ function initializeDatabase() {
       status: "Active",
     });
     insertDeal.run({
-      account_id: accountsMap["Tracy Aviary"],
+      account_id: (db as any).accountsMap["Tracy Aviary"],
       name: "Educational Program Sponsorship",
       start_date: "2025-06-01",
       end_date: "2025-12-31",
@@ -181,7 +215,7 @@ function initializeDatabase() {
       status: "Pending",
     });
     insertDeal.run({
-      account_id: accountsMap["Alpha Technologies"],
+      account_id: (db as any).accountsMap["Alpha Technologies"],
       name: "Software Integration Partnership",
       start_date: "2026-01-15",
       end_date: "2026-12-31",
@@ -189,7 +223,7 @@ function initializeDatabase() {
       status: "Prospecting",
     });
     insertDeal.run({
-      account_id: accountsMap["Beta Corp"],
+      account_id: (db as any).accountsMap["Beta Corp"],
       name: "Joint Marketing Campaign",
       start_date: "2025-08-01",
       end_date: "2025-11-30",
@@ -197,7 +231,7 @@ function initializeDatabase() {
       status: "Active",
     });
     insertDeal.run({
-      account_id: accountsMap["First National Bank"],
+      account_id: (db as any).accountsMap["First National Bank"],
       name: "Community Outreach Program",
       start_date: "2025-07-01",
       end_date: "2026-06-30",
@@ -205,7 +239,7 @@ function initializeDatabase() {
       status: "Active",
     });
     insertDeal.run({
-      account_id: accountsMap["Aspen Property Management"],
+      account_id: (db as any).accountsMap["Aspen Property Management"],
       name: "Summer Festival Sponsorship",
       start_date: "2025-06-15",
       end_date: "2025-08-31",
@@ -213,7 +247,7 @@ function initializeDatabase() {
       status: "Closed Won",
     });
     insertDeal.run({
-      account_id: accountsMap["Vail Resorts"],
+      account_id: (db as any).accountsMap["Vail Resorts"],
       name: "Winter Season Partnership",
       start_date: "2025-12-01",
       end_date: "2026-04-30",
@@ -221,7 +255,7 @@ function initializeDatabase() {
       status: "Prospecting",
     });
     insertDeal.run({
-      account_id: accountsMap["Stellaris Corp"],
+      account_id: (db as any).accountsMap["Stellaris Corp"],
       name: "Strategic Alliance Initiative",
       start_date: "2025-10-01",
       end_date: "2026-09-30",
@@ -229,13 +263,17 @@ function initializeDatabase() {
       status: "Negotiating",
     });
     insertDeal.run({
-      account_id: accountsMap["Utah Jazz"], // Example of another deal for an existing account
+      account_id: (db as any).accountsMap["Utah Jazz"], // Example of another deal for an existing account
       name: "Jazz Halftime Show Sponsorship 2025-2026",
       start_date: "2025-07-01",
       end_date: "2026-06-30",
       value: 200000.00,
       status: "Active",
     });
+  } else {
+    console.log("Deals table already has data. Skipping initial insertion.");
+  }
+
   return db;
 }
 

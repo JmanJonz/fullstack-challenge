@@ -7,3 +7,11 @@
 - I use lucid spark for notes and organizing my thoughts a lot so I am going to switch over to there and I can send that over if you would like after I turn this in... As of right now I am writing the instruction in my own words to make sure I clearly get what I am doing. 
 
 - still taking some notes in lucid spark but not too many now... I have spent 1.5 hours on this so far but I need to step away for a few hours. I plan on finishing it up later tonight within the 4 hour mark... I should be able to do the rest late tonight, but if not due to my schedule right now otherwise I won't get around to finishing it till this saturday. But I will keep track of how much time it takes me and report back honestly when I submit it. 
+
+- okay it is saturday I haven't done any more work on it, i'm going to work on it on and off today and track the time I spend on it. 
+
+- I'll just keep taking notes here from now on... 
+
+- Anyways I had ai load mock data sql but I noticed that it is running everytime the server restarts and duplicating a lot of data soo I'm using ai to fix that so that it only adds the data if the tables are empty...
+
+- I tried using gemini to correct the code so that it only loads data in if none has been loaded in already, but it is causing a bunch of errors so I am going to go figure it out and setup those conditions myself...
