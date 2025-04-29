@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import "tailwindcss"
+
 
 function Deals() {
 
@@ -34,11 +36,11 @@ useEffect(() => {
 ,[])
 
   return (
-            <div>
-            <h1>Here are the fetched deals from the backend api: </h1>
-            {deals.map((deal) => {
-              return <div>{deal.deal_name}</div>
-            })}
+            <div className='flex flex-col gap-2 mx-auto'>
+            <h1 className='mx-auto text-[30px] text-blue-500 font-bold'>Deals:</h1>
+            <div className='border mx-auto p-5'>{deals.map((deal) => {
+              return <div className="text-[20px] font-bold mx-auto">{deal.deal_name + " $" + deal.value}</div>
+            })}</div>
           </div>    
   )
 }
