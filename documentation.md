@@ -29,3 +29,11 @@
 - These are assumptions that I am making so I am just going to move forward for now editing my backend endpoints so that you can pass to it an organization id and then only get the deals returned back for that specific org instead of all of the deals currently in the database. 
 
 - I noticed that ai didn't link accounts to org and deals to accounts so I revised my prompt and got that fixed so that I can now continue making the api endpoint to get all of the deals for an organization by getting all of deals linked to accounts that are linked to the org in the endpoint. 
+
+- Kind just just thinking out loud here, accounts have an org id that links them to org and deals have an id that links them to an account sooo if I want to get all deals for an organization I will need to take in the org id as a parameter in the request and then get all of the accounts that link to that org and then return all of the deals for each of those accounts... This is what I am going to do. 
+
+- Got that working so now I need to dynamically somehow take in the org id from the frontend so that I can get the deals for a specific org on the frontend in order to render them out as desired. I'm going to go set that up now through the react router. Gonna install that and set it up rn. 
+
+- Sweet, I now am using the backend api to fetch all the deals for a specific org id and they are being rendered out onto the screen without styling. So now I am going to go through and structure the html and then style it using tailwind since another job I am interviewing for uses tailwind and I have never used it yet so I'm just using that to get some practice with it...
+
+- I'm still not sure what is going on in the screen shot... Like what are the title's in the gray boxes representing (Build Proposal, Pitch Proposal, & Negotiation)--------------- If I were working at SponsorCX I would ask questions to get clarifications on this, but since I am not and since I am getting close to working 4 hours on this I am just going to display all of the deals in a simple list for a requested organization, add some simple styles to it, and then try to add in the filter functionality real quick to it. 
