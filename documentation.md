@@ -37,3 +37,5 @@
 - Sweet, I now am using the backend api to fetch all the deals for a specific org id and they are being rendered out onto the screen without styling. So now I am going to go through and structure the html and then style it using tailwind since another job I am interviewing for uses tailwind and I have never used it yet so I'm just using that to get some practice with it...
 
 - I'm still not sure what is going on in the screen shot... Like what are the title's in the gray boxes representing (Build Proposal, Pitch Proposal, & Negotiation)--------------- If I were working at SponsorCX I would ask questions to get clarifications on this, but since I am not and since I am getting close to working 4 hours on this I am just going to display all of the deals in a simple list for a requested organization, add some simple styles to it, and then try to add in the filter functionality real quick to it. 
+
+- Okay after stepping away for a little while and coming back to look at the screen shot and reading challenge 3 I am making the assumption that the gray box headings are refering to the status of the deals so that is what I am going to go with. 

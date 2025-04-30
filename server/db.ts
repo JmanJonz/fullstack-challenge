@@ -141,7 +141,7 @@ function initializeDatabase() {
       start_date: "2025-07-01",
       end_date: "2026-06-30",
       value: 500000.00,
-      status: "Active",
+      status: "Build Proposal",
     });
     insertDeal.run({
       account_id: (db as any).accountsMap["Real Salt Lake"],
@@ -149,7 +149,7 @@ function initializeDatabase() {
       start_date: "2025-03-01",
       end_date: "2025-11-30",
       value: 300000.00,
-      status: "Active",
+      status: "Build Proposal",
     });
     insertDeal.run({
       account_id: (db as any).accountsMap["Vivint Arena"],
@@ -157,7 +157,7 @@ function initializeDatabase() {
       start_date: "2026-01-01",
       end_date: "2030-12-31",
       value: 2000000.00,
-      status: "Negotiating",
+      status: "Pitch Proposal",
     });
     insertDeal.run({
       account_id: (db as any).accountsMap["Acme Corp"],
@@ -165,7 +165,7 @@ function initializeDatabase() {
       start_date: "2025-05-01",
       end_date: "2025-12-31",
       value: 75000.00,
-      status: "Pending",
+      status: "Negotiation",
     });
     insertDeal.run({
       account_id: (db as any).accountsMap["Globex Industries"],
@@ -173,7 +173,7 @@ function initializeDatabase() {
       start_date: "2025-09-15",
       end_date: "2025-09-15",
       value: 25000.00,
-      status: "Closed Won",
+      status: "Negotiation",
     });
     insertDeal.run({
       account_id: (db as any).accountsMap["Wayne Enterprises"],
@@ -181,7 +181,7 @@ function initializeDatabase() {
       start_date: "2025-07-01",
       end_date: "2025-09-30",
       value: 150000.00,
-      status: "Active",
+      status: "Build Proposal",
     });
     insertDeal.run({
       account_id: (db as any).accountsMap["Utah Symphony"],
@@ -189,7 +189,7 @@ function initializeDatabase() {
       start_date: "2025-09-01",
       end_date: "2026-05-31",
       value: 150000.00,
-      status: "Active",
+      status: "Build Proposal",
     });
     insertDeal.run({
       account_id: (db as any).accountsMap["Tracy Aviary"],
@@ -197,7 +197,7 @@ function initializeDatabase() {
       start_date: "2025-06-01",
       end_date: "2025-12-31",
       value: 40000.00,
-      status: "Pending",
+      status: "Negotiation",
     });
     insertDeal.run({
       account_id: (db as any).accountsMap["Alpha Technologies"],
@@ -205,7 +205,7 @@ function initializeDatabase() {
       start_date: "2026-01-15",
       end_date: "2026-12-31",
       value: 600000.00,
-      status: "Prospecting",
+      status: "Negotiation",
     });
     insertDeal.run({
       account_id: (db as any).accountsMap["Beta Corp"],
@@ -213,7 +213,7 @@ function initializeDatabase() {
       start_date: "2025-08-01",
       end_date: "2025-11-30",
       value: 120000.00,
-      status: "Active",
+      status: "Build Proposal",
     });
     insertDeal.run({
       account_id: (db as any).accountsMap["First National Bank"],
@@ -221,7 +221,7 @@ function initializeDatabase() {
       start_date: "2025-07-01",
       end_date: "2026-06-30",
       value: 180000.00,
-      status: "Active",
+      status: "Build Proposal",
     });
     insertDeal.run({
       account_id: (db as any).accountsMap["Aspen Property Management"],
@@ -229,7 +229,7 @@ function initializeDatabase() {
       start_date: "2025-06-15",
       end_date: "2025-08-31",
       value: 50000.00,
-      status: "Closed Won",
+      status: "Negotiation",
     });
     insertDeal.run({
       account_id: (db as any).accountsMap["Vail Resorts"],
@@ -237,7 +237,7 @@ function initializeDatabase() {
       start_date: "2025-12-01",
       end_date: "2026-04-30",
       value: 350000.00,
-      status: "Prospecting",
+      status: "Negotiation",
     });
     insertDeal.run({
       account_id: (db as any).accountsMap["Stellaris Corp"],
@@ -245,7 +245,7 @@ function initializeDatabase() {
       start_date: "2025-10-01",
       end_date: "2026-09-30",
       value: 1200000.00,
-      status: "Negotiating",
+      status: "Pitch Proposal",
     });
     insertDeal.run({
       account_id: (db as any).accountsMap["Utah Jazz"], // Example of another deal for an existing account
@@ -253,7 +253,7 @@ function initializeDatabase() {
       start_date: "2025-07-01",
       end_date: "2026-06-30",
       value: 200000.00,
-      status: "Active",
+      status: "Build Proposal",
     });
   } else {
     console.log("Deals table already has data. Skipping initial insertion.");
