@@ -37,10 +37,15 @@ useEffect(() => {
 ,[])
 
   return (
-            <div className='flex flex-col gap-2 mx-auto'>
+          <div className='flex flex-col gap-2 mx-auto'>
             <h1 className='mx-auto text-[30px] text-blue-500 font-bold'>Deals:</h1>
-            <div className='border mx-auto p-5'>{deals.map((deal) => {
-              return <DealInfo num={5} deal={deal}/>
+            <div className="w-3/4 justify-evenly flex flex-row p-1 border text-[20px] font-bold mx-auto">
+              <div className=' '>Deal</div>
+              <div className=' '>Status</div>
+              <div className=' '>Value</div>
+            </div>
+            <div className='flex flex-col gap-1.5 mx-auto p-5 w-1/1'>{deals.map((deal) => {
+              return <DealInfo num={3} deal={deal}/>
             })}</div>
           </div>    
   )
